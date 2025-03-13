@@ -23,7 +23,7 @@ test.describe('Scenarios: 3 Add a New Employee', () => {
     const EmployeeFunction = new EmployeeFunctions(page);
 
     // Navigate to the base URL
-    await page.goto(process.env.BASE_URL);
+    EmployeeFunction.GoToBaseURL();
 
     // Call the LogIn function from the AuthFunctions class to login as an admin
     await AuthFunction.LogIn(process.env.WP_USERNAME, process.env.WP_PASSWORD);
@@ -35,9 +35,10 @@ test.describe('Scenarios: 3 Add a New Employee', () => {
   test('Login with new employee credantials', async ({ page }) => {
     // Create an instance of the AuthFunctions and SearchEmployee classes
     const AuthFunction = new AuthFunctions(page);
+    const EmployeeFunction = new EmployeeFunctions(page);
 
     // Navigate to the base URL
-    await page.goto(process.env.BASE_URL);
+    EmployeeFunction.GoToBaseURL();
 
     // Call the LogIn function from the AuthFunctions class to login as a new employee user
     await AuthFunction.LogIn(EmployeeInfo.Username, EmployeeInfo.Password);
