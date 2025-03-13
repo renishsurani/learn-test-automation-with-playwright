@@ -22,14 +22,34 @@ export class EmployeeFunctions {
   async SearchEmployeeFromList(name) {
     // Navigate to the PIM page and search for an employee by name
     await this.page.getByRole("link", { name: "PIM" }).click();
-    await this.page
-      .getByRole("textbox", { name: "Type for hints..." })
-      .first()
-      .fill(name);
+    await this.page.getByRole("textbox", { name: "Type for hints..." }).first().fill(name);
     await this.page.getByRole("button", { name: "Search" }).click();
+    await this.page.waitForTimeout(1000);
+  }
 
-    // Verify that the employee name is displayed in the search results
-    await expect(this.page.getByRole("cell", { name: name })).toHaveText(name);
+  async UpdateEmployeeInformation(name) {
+
+    const updatedName = name + "Updated";
+
+    await this.SearchEmployeeFromList(name);
+
+    // click on the edit button of the employee
+    await this.page.locator('//*[@id="app"]/div[1]/div[2]/div[2]/div/div[2]/div[3]/div/div[2]/div[1]/div/div[9]/div/button[1]').click();
+
+    // Update the employee information
+    await this.page.getByRole("textbox", { name: "First Name" }).click();
+    await this.page.getByRole("textbox", { name: "First Name" }).fill(updatedName);
+    await this.page.getByRole("textbox", { name: "Last Name" }).click();
+    await this.page.getByRole("textbox", { name: "Last Name" }).fill(updatedName);
+
+    await this.page.getByText("Female").click();
+
+    await this.page.waitForTimeout(10000);
+    // Click on the save button to save the updated information
+    await this.page.locator('form').filter({ hasText: 'Employee Full NameEmployee' }).getByRole('button').click();
+
+
+    await expect(this.page.getByText("SuccessSuccessfully Updated×")).toBeVisible();
   }
 
   // The AddNewEmployee function to add a new employee
@@ -55,8 +75,6 @@ export class EmployeeFunctions {
     await this.page.locator('input[type="password"]').first().fill(password);
     await this.page.locator('input[type="password"]').nth(1).fill(password);
     await this.page.getByRole("button", { name: "Save" }).click();
-
-    // Verify that the employee was successfully saved
-    await expect(this.page.getByText("Successfully Saved")).toBeVisible();
+    await this.page.waitForTimeout(1000);
   }
 }

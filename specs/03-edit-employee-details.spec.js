@@ -1,14 +1,14 @@
 // @ts-check
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 require("dotenv").config();
 
 const { AuthFunctions } = require("../pages/authFunctions");
 const { EmployeeFunctions } = require("../pages/employeeFunctions");
 
-test.describe('Scenarios: 3 Add a New Employee', () => {
-
+test.describe("Scenarios: 4 Edit Employee Details", () => {
+  // generate random number and create all the necessary information for the employee
   const randomNumber = Math.floor(Math.random() * 999999999).toString();
-  const Username = 'playwright' + randomNumber;
+  const Username = "playwright" + randomNumber;
   const EmployeeInfo = {
     FirstName: Username,
     LastName: Username,
@@ -17,7 +17,7 @@ test.describe('Scenarios: 3 Add a New Employee', () => {
     Password: Username,
   };
 
-  test('Add new employee', async ({ page }) => {
+  test("Add new employee", async ({ page }) => {
     // Create an instance of the AuthFunctions and SearchEmployee classes
     const AuthFunction = new AuthFunctions(page);
     const EmployeeFunction = new EmployeeFunctions(page);
@@ -33,10 +33,11 @@ test.describe('Scenarios: 3 Add a New Employee', () => {
 
     // Verify that the employee was successfully saved
     await expect(page.getByText("Successfully Saved")).toBeVisible();
-
   });
 
-  test('Login with new employee credantials', async ({ page }) => {
+  test("Update the personal information of added employee", async ({
+    page,
+  }) => {
     // Create an instance of the AuthFunctions and SearchEmployee classes
     const AuthFunction = new AuthFunctions(page);
     const EmployeeFunction = new EmployeeFunctions(page);
@@ -44,11 +45,12 @@ test.describe('Scenarios: 3 Add a New Employee', () => {
     // Navigate to the base URL
     EmployeeFunction.GoToBaseURL();
 
-    // Call the LogIn function from the AuthFunctions class to login as a new employee user
-    await AuthFunction.LogIn(EmployeeInfo.Username, EmployeeInfo.Password);
+    // Call the AdminLogin function from the AuthFunctions class to login as an admin
+    await AuthFunction.LogIn(process.env.WP_USERNAME, process.env.WP_PASSWORD);
 
-    // Check if the new employee is logged in successfully
-    await expect(page.getByText(EmployeeInfo.FirstName + " " + EmployeeInfo.LastName)).toBeVisible();
+    console.log(EmployeeInfo.FirstName);
 
+    // Call the SearchEmployeeFromList function from the SearchEmployee class to search for an employee
+    await EmployeeFunction.UpdateEmployeeInformation(EmployeeInfo.FirstName);
   });
 });
