@@ -28,6 +28,7 @@ test.describe('Scenarios: 3 Add a New Employee', () => {
     // Call the LogIn function from the AuthFunctions class to login as an admin
     await AuthFunction.LogIn(process.env.WP_USERNAME, process.env.WP_PASSWORD);
 
+    // Call the AddNewEmployee function from the EmployeeFunctions class to add a new employee
     await EmployeeFunction.AddNewEmployee(...Object.values(EmployeeInfo));
 
   });
@@ -43,6 +44,7 @@ test.describe('Scenarios: 3 Add a New Employee', () => {
     // Call the LogIn function from the AuthFunctions class to login as a new employee user
     await AuthFunction.LogIn(EmployeeInfo.Username, EmployeeInfo.Password);
 
+    // Check if the new employee is logged in successfully
     await expect(page.getByText(EmployeeInfo.FirstName + " " + EmployeeInfo.LastName)).toBeVisible();
 
   });
