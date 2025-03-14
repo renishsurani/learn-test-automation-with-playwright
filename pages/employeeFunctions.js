@@ -57,24 +57,75 @@ export class EmployeeFunctions {
     // Navigate to the Add Employee page and add a new employee with the given details
     await this.page.getByRole("link", { name: "PIM" }).click();
     await this.page.getByRole("link", { name: "Add Employee" }).click();
-    await this.page
-      .getByRole("textbox", { name: "First Name" })
-      .fill(firstName);
+    await this.page.getByRole("textbox", { name: "First Name" }).fill(firstName);
     await this.page.getByRole("textbox", { name: "Last Name" }).fill(lastName);
-    await this.page
-      .locator("form")
-      .getByRole("textbox")
-      .nth(4)
-      .fill(employeeID);
+    await this.page.locator("form").getByRole("textbox").nth(4).fill(employeeID);
     await this.page.locator("form span").click();
-    await this.page
-      .locator(
-        "div:nth-child(4) > .oxd-grid-2 > div > .oxd-input-group > div:nth-child(2) > .oxd-input"
-      )
-      .fill(username);
+    await this.page.locator("div:nth-child(4) > .oxd-grid-2 > div > .oxd-input-group > div:nth-child(2) > .oxd-input").fill(username);
     await this.page.locator('input[type="password"]').first().fill(password);
     await this.page.locator('input[type="password"]').nth(1).fill(password);
     await this.page.getByRole("button", { name: "Save" }).click();
+    await this.page.waitForTimeout(1000);
+  }
+
+  // The AssignLeaveToEmployee function
+  async AssignLeaveToEmployee(firstname) {
+
+    // Navigate to the Leave page and assign leave to the employee
+    await this.page.getByRole('link', { name: 'Leave' }).click();
+    await this.page.getByText('Entitlements').click();
+
+    // Assign leave to the employee
+    await this.page.getByRole('menuitem', { name: 'Add Entitlements' }).click();
+    await this.page.getByRole('textbox', { name: 'Type for hints...' }).click();
+    await this.page.getByRole('textbox', { name: 'Type for hints...' }).fill(firstname);
+    await this.page.getByRole('option', { name: firstname }).click();
+    await this.page.locator('form i').first().click();
+    await this.page.getByRole('option', { name: 'CAN - Personal' }).click();
+    await this.page.getByRole('textbox').nth(2).click();
+    await this.page.getByRole('textbox').nth(2).fill('12');
+    await this.page.getByRole('button', { name: 'Save' }).click();
+
+    // Click on the confirm button to confirm the leave assignment
+    await this.page.getByRole('button', { name: 'Confirm' }).click();
+    await this.page.waitForTimeout(1000);
+  }
+
+  // The ApplyForLeave function
+  async ApplyForLeave() {
+
+    await this.page.waitForTimeout(1000);
+
+    // Navigate to the Leave page and apply for leave
+    await this.page.getByRole('link', { name: 'Leave', exact: true }).click();
+    await this.page.getByRole('listitem').filter({ hasText: 'Apply' }).click();
+
+    // Apply for leave
+    await this.page.getByText('-- Select --').click();
+    await this.page.getByText('CAN - Personal').click();
+    await this.page.locator('form i').nth(2).click();
+    await this.page.waitForTimeout(1000);
+    await this.page.getByText('13').click();
+    await this.page.locator('textarea').click();
+    await this.page.locator('textarea').fill('Demo Leave');
+
+    // Click on the apply button to apply for leave
+    await this.page.getByRole('button', { name: 'Apply' }).click();
+    await this.page.waitForTimeout(2000);
+  }
+
+  async ApproveEmployeeLeave(username) {
+
+    // Navigate to the Leave page and approve the employee leave
+    await this.page.getByRole('link', { name: 'Leave', exact: true }).click();
+    await this.page.getByRole('listitem').filter({ hasText: 'Leave List' }).click();
+
+    // Search for the employee leave and approve it
+    await this.page.getByRole('textbox', { name: 'Type for hints...' }).click();
+    await this.page.getByRole('textbox', { name: 'Type for hints...' }).fill(username);
+    await this.page.getByRole('option', { name: username }).locator('span').click();
+    await this.page.getByRole('button', { name: 'Search' }).click();
+    await this.page.getByRole('button', { name: 'Approve' }).click();
     await this.page.waitForTimeout(1000);
   }
 }
