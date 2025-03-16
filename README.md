@@ -6,8 +6,10 @@ This assignment is a Playwright-based test suite for testing various functionali
 
 ## Prerequisites
 
-- Node.js (>=14.x)
-- npm (>=6.x)
+Before you run the test, install the following requirements:
+
+- Node.js
+- npm
 
 ## Installation
 
