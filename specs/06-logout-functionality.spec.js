@@ -37,7 +37,7 @@ test.describe("Scenarios: 7 Logout Functionality", () => {
     await AuthFunction.LogOut();
   });
 
-  test("Login with Admin and logout", async ({ page }) => {
+  test("Login with Employee and logout", async ({ page }) => {
     // Create an instance of the AuthFunctions and SearchEmployee classes
     const AuthFunction = new AuthFunctions(page);
     const EmployeeFunction = new EmployeeFunctions(page);
