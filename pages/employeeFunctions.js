@@ -114,6 +114,7 @@ export class EmployeeFunctions {
     await this.page.waitForTimeout(2000);
   }
 
+  // The ApproveEmployeeLeave function to approve the employee leave
   async ApproveEmployeeLeave(username) {
 
     // Navigate to the Leave page and approve the employee leave
@@ -127,5 +128,25 @@ export class EmployeeFunctions {
     await this.page.getByRole('button', { name: 'Search' }).click();
     await this.page.getByRole('button', { name: 'Approve' }).click();
     await this.page.waitForTimeout(1000);
+  }
+
+  // The AssignSupervisor function to assign a supervisor to an employee
+  async AssignSupervisor(employee2) {
+    await this.page.getByRole('link', { name: 'Report-to' }).click();
+    await this.page.locator('div').filter({ hasText: /^Assigned Supervisors/ }).getByRole('button').click();
+    await this.page.getByRole('textbox', { name: 'Type for hints...' }).click();
+    await this.page.getByRole('textbox', { name: 'Type for hints...' }).fill(employee2);
+    await this.page.getByRole('option', { name: employee2 }).click();
+    await this.page.locator('form i').click();
+    await this.page.getByRole('option', { name: 'Direct', exact: true }).click();
+    await this.page.getByRole('button', { name: 'Save' }).click();
+    await this.page.waitForTimeout(1000);
+  }
+
+  // The VerifySupervisorAssignment function to verify the supervisor assignment of an employee
+  async VerifySupervisorAssignment(employee2) {
+    await this.page.getByRole('link', { name: 'My Info' }).click();
+    await this.page.getByRole('link', { name: 'Report-to' }).click();
+    await expect(this.page.getByRole('row', { name: employee2 })).toBeVisible();
   }
 }
