@@ -26,7 +26,7 @@ test.describe("Product Management test cases", () => {
 
 		// Generate the random number and price
 		const randomNumber = Math.floor(Math.random() * 999999999).toString();
-		const randomPrise = Math.floor(50 + Math.random() * 999);
+		const randomPrice = Math.floor(50 + Math.random() * 999);
 
 		// Upload the image
 		imageInfo = await requestUtils.uploadMedia("uploads/woocommerce-placeholder.png");
@@ -35,8 +35,8 @@ test.describe("Product Management test cases", () => {
 		const productInfo = {
 			name: ("Playwright-" + randomNumber),
 			description: "This is for the testing",
-			regularPrice: randomPrise.toString(),
-			salePrice: (randomPrise - 20).toString(),
+			regularPrice: randomPrice.toString(),
+			salePrice: (randomPrice - 20).toString(),
 			sku: "50",
 			tag: "E2E",
 			featureImageId: imageInfo.id,
